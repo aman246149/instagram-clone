@@ -9,4 +9,11 @@
 - Display User Posts, Followers & Following
 - EVERYTHING REAL TIME
 - Sign Out
-- YouTube
+
+### What I learned From this Project
+- Handling Authentication flow for persistant UI
+- Upload Images with compress
+- Lots of Firebase Concepts
+- Collections And Subcollection in Firebase
+- Writing clean Code
+- Learn More things about fluter widgets
