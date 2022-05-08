@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone/Providers/user_provider.dart';
 import 'package:instagram_clone/Resources/FireStoreMethods.dart';
 import 'package:instagram_clone/Resources/Storage_methods.dart';
+import 'package:instagram_clone/Screens/AddVideo.dart';
 import 'package:instagram_clone/utils/Utils.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:provider/provider.dart';
@@ -52,9 +53,8 @@ class _PostScreenState extends State<PostScreen> {
     } catch (e) {
       showSnackBar(e.toString(), context);
     }
-   _descriptionController.clear();
+    _descriptionController.clear();
   }
-
 
   showDialogBox(BuildContext parentContext) {
     showDialog(
@@ -97,30 +97,68 @@ class _PostScreenState extends State<PostScreen> {
         });
   }
 
-  void clearImage(){
+  void clearImage() {
     setState(() {
-      _file=null;
+      _file = null;
     });
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
-    super.dispose();
     _descriptionController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final User user = Provider.of<UserProvider>(context).getUser;
     return _file == null
-        ? Center(
-            child: IconButton(
-              icon: Icon(Icons.upload),
-              color: Colors.white,
-              onPressed: () {
-                showDialogBox(context);
-              },
+        ? Padding(
+            padding: const EdgeInsets.only(top: 28.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Center(
+                    child: InkWell(
+                  onTap: () {
+                    showDialogBox(context);
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(20),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.add_a_photo),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "Add Photo",
+                          style: TextStyle(
+                              fontSize: 26,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        )
+                      ],
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20),
+                      ),
+                    ),
+                  ),
+                )),
+                Container(
+                    height: 100,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [Icon(Icons.video_call), AddVideoScreen()],
+                    )),
+              ],
             ),
           )
         : Scaffold(
@@ -134,8 +172,9 @@ class _PostScreenState extends State<PostScreen> {
               centerTitle: false,
               actions: [
                 TextButton(
-                    onPressed:(){
-                        postImage(user.uid, user.username, user.photoUrl);},
+                    onPressed: () {
+                      postImage(user.uid, user.username, user.photoUrl);
+                    },
                     child: const Text(
                       "Post",
                       style: TextStyle(
@@ -147,7 +186,9 @@ class _PostScreenState extends State<PostScreen> {
             ),
             body: Column(
               children: [
-                isLoading ? const LinearProgressIndicator() :const Padding(padding: EdgeInsets.only(top: 0)),
+                isLoading
+                    ? const LinearProgressIndicator()
+                    : const Padding(padding: EdgeInsets.only(top: 0)),
                 const Divider(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,

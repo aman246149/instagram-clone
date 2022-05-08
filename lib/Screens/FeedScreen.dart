@@ -21,6 +21,7 @@ class FeedScreen extends StatelessWidget {
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection("posts").snapshots(),
         builder: (context,AsyncSnapshot<QuerySnapshot<Map<String,dynamic>>> snapshots){
+          print("length $snapshots.data!.docs.length");
           if(snapshots.connectionState==ConnectionState.waiting){
             return const Center(child: CircularProgressIndicator(),);
           }

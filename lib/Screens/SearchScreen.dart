@@ -18,8 +18,8 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void dispose() {
     // TODO: implement dispose
-    super.dispose();
     _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -30,6 +30,11 @@ class _SearchScreenState extends State<SearchScreen> {
         title: TextFormField(
           controller: _controller,
           decoration: const InputDecoration(labelText: 'Search for a user...'),
+          onChanged: (String val){
+            setState(() {
+              isShowUser = true;
+            });
+          },
           onFieldSubmitted: (String _) {
             setState(() {
               isShowUser = true;
@@ -39,15 +44,15 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
       ),
       body: isShowUser
-          ? FutureBuilder(
-              future: FirebaseFirestore.instance
+          ? StreamBuilder(
+              stream: FirebaseFirestore.instance
                   .collection("users")
                   .where('username', isGreaterThanOrEqualTo: _controller.text)
-                  .get(),
+                  .snapshots(),
               builder: (context,
                   AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
                 }
@@ -72,11 +77,11 @@ class _SearchScreenState extends State<SearchScreen> {
                 );
               },
             )
-          : FutureBuilder(
-              future: FirebaseFirestore.instance
+          : StreamBuilder(
+              stream: FirebaseFirestore.instance
                   .collection('posts')
                   .orderBy('datePublished')
-                  .get(),
+                  .snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(
