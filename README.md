@@ -8,6 +8,8 @@
 - Follow Users
 - Display User Posts, Followers & Following
 - EVERYTHING REAL TIME
+- Add video
+- watch video in real time like instagram reels
 - Sign Out
 
 ### What I learned From this Project
